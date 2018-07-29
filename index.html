@@ -8,9 +8,8 @@
 	</head>
 
 	<body>
-		<button onclick="stekache()" id="bouton">Click Me</button>
-
-		<div id="myDIV">
+		<button onclick="tab()" id="bouton">describe</button>
+		<div id="myDIV" style="display:none">
 		  Data description :
 		  <table style="width:100%">
 			<tr>
@@ -29,6 +28,18 @@
 				<td>Val</td>
 			</tr>
 		</table>
+		</div>
+		<button onclick="tab_history()" id="bouton">Histogram</button>
+		<div id="history" style="display:none">
+			display History
+		</div>
+		<button onclick="tab_sp()" id="bouton">Scatter plot</button>
+		<div id="scatter_plot" style="display:none">
+			display Scatter Plot
+		</div>
+		<button onclick="tab_pp()" id="bouton">Pair Plot</button>
+		<div id="pair_plot" style="display:none">
+			display Pair Plot
 		</div>
 	</body>
 </html>
