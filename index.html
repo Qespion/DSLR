@@ -4,29 +4,41 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="style.css" />
 		<title>Datascience X Logistic Regression</title>
+		<script src="upload.js"></script>
 		<script src="describe.js"></script>
 	</head>
 
-	<body>
+	<body onload="onLoad()">
+		<form>
+			<label for="data">Training datas:</label></br>
+			<input type="file" value="Browse data" name="data" id="data" /></br>
+			<input type="button" value="Default data" name="defaultData" id="defaultData" />
+			<div id="loadStatus">Waiting for Data...</div>
+		<form>
 		<div>
-			Data description :
+			<p>Data description:</p>
+			<table style="width:100%">
+				<tr>
+					<th></th>
+					<th>Feature</th> 
+					<th>Feature</th>
+				</tr>
+				<tr>
+					<th>Parm</th>
+					<td>Val</td> 
+					<td>Val</td>
+				</tr>
+				<tr>
+					<th>Parm</th>
+					<td>Val</td> 
+					<td>Val</td>
+				</tr>
+			</table>
 		</div>
-		<table style="width:100%">
-			<tr>
-				<th></th>
-				<th>Feature</th> 
-				<th>Feature</th>
-			</tr>
-			<tr>
-				<th>Parm</th>
-				<td>Val</td> 
-				<td>Val</td>
-			</tr>
-			<tr>
-				<th>Parm</th>
-				<td>Val</td> 
-				<td>Val</td>
-			</tr>
-		</table>
+		<br/>
+		<br/>
+		<div id="aiBar">
+			<div id="aiProgress"><div id="aiPercent">0%</div></div>
+		</div>
 	</body>
 </html>
