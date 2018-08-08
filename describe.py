@@ -2,17 +2,68 @@
 
 import os
 import sys
+import math
+
+def get_max(lst):
+    lst.sort()
+    return (lst[-1])
+
+def lower_quartile(lst):
+    lst.sort()
+    lq = int(round((len(lst) + 1 ) / 4.0 ) - 1)
+    return(lst[lq])
+
+def upper_quartile(lst):
+    lst.sort()
+    uq = int((len(lst) - 1) * 0.75)
+    return(lst[uq])
+
+def median(lst):
+    n = len(lst)
+    lst.sort()
+    if n % 2 == 1:
+        return lst[n//2]
+    else:
+        return sum(lst[n//2-1:n//2+1])/2.0
 
 def count(data):
-    return 0
+    total = 0
+    for _ in data:
+        total += 1
+    return (total)
+
 
 def mean(data):
-    return 0
+    new_data = []
+    for nb in data:
+        if nb != '':
+            new_data.append(float(nb))
+    return (sum(new_data) / float(len(new_data)))
 
 def std(data):
-    return 0
+    new_data = []
+    for nb in data:
+        if nb != '':
+            new_data.append(float(nb))
+    moy = mean(new_data)
+    scd_nb = 0
+    for x in new_data:
+        scd_nb += (x - moy) ** 2
+    return ((scd_nb/len(new_data))**0.5)
 
 def percentil(data, percent):
+    new_data = []
+    for nb in data:
+        if nb != '':
+            new_data.append(float(nb))
+    if percent == 0.50:
+        return (median(new_data))
+    elif percent == 0.25:
+        return (lower_quartile(new_data))
+    elif percent == 0.75:
+        return (upper_quartile(new_data))
+    else:
+        return (get_max(new_data))
     return 0
 
 def print_data(sel_features, features, data):
@@ -85,6 +136,7 @@ def print_describe(fileName):
             data_col.append(line.split(','))
     features = data_col[0]
     sample_data = data_col[1]
+    # print(data_col)
     data = []
     i = 0
     while i < len(features):
@@ -117,6 +169,6 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         print_describe(sys.argv[1])
     elif len(sys.argv) > 2:
-        print "Too many arguments"
+        print("Too many arguments")
     else:
-        print "You need to give a file as argument"
+        print("You need to give a file as argument")
