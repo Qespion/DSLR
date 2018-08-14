@@ -8,6 +8,10 @@ def get_max(lst):
     lst.sort()
     return (lst[-1])
 
+def get_min(lst):
+    lst.sort()
+    return (lst[0])
+
 def lower_quartile(lst):
     lst.sort()
     lq = int(round((len(lst) + 1 ) / 4.0 ) - 1)
@@ -62,6 +66,8 @@ def percentil(data, percent):
         return (lower_quartile(new_data))
     elif percent == 0.75:
         return (upper_quartile(new_data))
+    elif percent == 0:
+        return (get_min(new_data))
     else:
         return (get_max(new_data))
     return 0
