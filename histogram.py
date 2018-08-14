@@ -6,36 +6,72 @@ import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 from numpy import array
 
-mu, sigma = 100, 15
-x = np.random.randn(100000)
-print(type(x))
-
-def get_notes(tab):
+def get_notes_slytherin(tab):
 	notes = []
 	for lines in tab:
 		if (lines != ''):
 			array = lines.split(',')
-			notes.append(array[6])
+			if array[18] != '' and array[1] == 'Slytherin':
+				notes.append(float(array[18]))
 	return notes
 
+def get_notes_hufflepuff(tab):
+	notes = []
+	for lines in tab:
+		if (lines != ''):
+			array = lines.split(',')
+			if array[18] != '' and array[1] == 'Hufflepuff':
+				notes.append(float(array[18]))
+	return notes
+
+def get_notes_Ravenclaw(tab):
+	notes = []
+	for lines in tab:
+		if (lines != ''):
+			array = lines.split(',')
+			if array[18] != '' and array[1] == 'Ravenclaw':
+				notes.append(float(array[18]))
+	return notes
+
+def get_notes_Gryffindor(tab):
+	notes = []
+	for lines in tab:
+		if (lines != ''):
+			array = lines.split(',')
+			if array[18] != '' and array[1] == 'Gryffindor':
+					notes.append(float(array[18]))
+	return notes
+
+def get_range(tab):
+	notes = []
+	for lines in tab:
+		if (lines != ''):
+			array = lines.split(',')
+			if array[18] != '':
+					notes.append(float(array[18]))
+	notes.sort()
+	minimal = notes[0]
+	maximal = notes[-1]
+	plt.axis([notes[0], notes[-1], 0, 200])
+
 with open(sys.argv[1], 'r') as my_file:
-	my_file.readline()
+	title = my_file.readline()
+	title = title.split(',')
 	file = my_file.read()
 	tab = file.split('\n')
-	x = array(get_notes(tab))
-	print(x)
+	x = array(get_notes_slytherin(tab))
+	y = array(get_notes_Gryffindor(tab))
+	z = array(get_notes_hufflepuff(tab))
+	w = array(get_notes_Ravenclaw(tab))
+	get_range(tab)
 
-# the histogram of the data
-n, bins, patches = plt.hist(x, 50, normed=1, facecolor='green', alpha=0.75)
-
-# add a 'best fit' line
-# y = mlab.normpdf( bins, mu, sigma)
-# l = plt.plot(bins, y, 'r--', linewidth=1)
+plt.hist(x, facecolor='green', alpha = 0.5)
+plt.hist(y, facecolor='red', alpha = 0.5)
+plt.hist(z, facecolor='yellow', alpha = 0.5)
+plt.hist(w, facecolor='blue', alpha = 0.5)
 
 plt.xlabel('Grade')
 plt.ylabel('Numbers of students')
-plt.title("Feature 0")
-plt.axis([0, 42, 0, 40000])
+plt.title(title[18])
 plt.grid(False)
-
 plt.show()
