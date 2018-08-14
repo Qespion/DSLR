@@ -6,6 +6,8 @@ import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 from numpy import array
 
+# Still need to create a grid of histogram
+
 def get_notes_slytherin(tab):
 	notes = []
 	for lines in tab:
