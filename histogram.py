@@ -2,10 +2,8 @@
 
 import sys
 import numpy as np
-import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 from numpy import array
-
 # Still need to create a grid of histogram
 
 def get_notes_slytherin(tab):
@@ -67,13 +65,23 @@ with open(sys.argv[1], 'r') as my_file:
 	w = array(get_notes_Ravenclaw(tab))
 	get_range(tab)
 
-plt.hist(x, facecolor='green', alpha = 0.5)
-plt.hist(y, facecolor='red', alpha = 0.5)
-plt.hist(z, facecolor='yellow', alpha = 0.5)
-plt.hist(w, facecolor='blue', alpha = 0.5)
+fig, axes = plt.subplots(nrows=2, ncols=2)
+n_bins = 10
+ax0, ax1, ax2, ax3 = axes.flatten()
+colors = ['#7F0909','#EEE117','#0D6217','#000A90']
+ax0.hist([x, y, z, w], n_bins, normed=1, histtype='bar', color=colors, label=colors)
+ax0.legend(prop={'size': 10})
+ax0.set_title('Flying')
 
-plt.xlabel('Grade')
-plt.ylabel('Numbers of students')
-plt.title(title[18])
-plt.grid(False)
+#plt.hist(x, facecolor=slyt_color, alpha = 0.8)
+#plt.hist(y, facecolor=gryff_color, alpha = 0.8)
+#plt.hist(z, facecolor=huff_color, alpha = 0.8)
+#plt.hist(w, facecolor=raven_color, alpha = 0.8)
+
+#ax0.xlabel('Grade')
+#ax0.ylabel('Numbers of students')
+#labels= ["slytherin","gryffindor", "hufflepuff", "ravenclaw"]
+#plt.legend(handles, labels)
+#plt.title(title[18])
+plt.grid(True)
 plt.show()
