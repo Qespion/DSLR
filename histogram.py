@@ -1,87 +1,73 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import sys
+import csv
 import numpy as np
 import matplotlib.pyplot as plt
-from numpy import array
-# Still need to create a grid of histogram
+from matplotlib import gridspec
+import argparse
 
-def get_notes_slytherin(tab):
-	notes = []
-	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '' and array[1] == 'Slytherin':
-				notes.append(float(array[18]))
-	return notes
+"""
+	This file create histogram according to a train csv file.
+"""
 
-def get_notes_hufflepuff(tab):
-	notes = []
-	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '' and array[1] == 'Hufflepuff':
-				notes.append(float(array[18]))
-	return notes
+def check_file_ext(filename):
+	if not filename.endswith('.csv'):
+		raise argparse.ArgumentTypeError('wrong filetype or path')
+	return filename
 
-def get_notes_Ravenclaw(tab):
-	notes = []
-	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '' and array[1] == 'Ravenclaw':
-				notes.append(float(array[18]))
-	return notes
+parser = argparse.ArgumentParser()
+parser.add_argument("filename", type=check_file_ext, help="CSV file path")
+args = parser.parse_args()
 
-def get_notes_Gryffindor(tab):
-	notes = []
-	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '' and array[1] == 'Gryffindor':
-					notes.append(float(array[18]))
-	return notes
-
-def get_range(tab):
-	notes = []
-	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '':
-					notes.append(float(array[18]))
-	notes.sort()
-	minimal = notes[0]
-	maximal = notes[-1]
-	plt.axis([notes[0], notes[-1], 0, 200])
-
-with open(sys.argv[1], 'r') as my_file:
-	title = my_file.readline()
-	title = title.split(',')
-	file = my_file.read()
-	tab = file.split('\n')
-	x = array(get_notes_slytherin(tab))
-	y = array(get_notes_Gryffindor(tab))
-	z = array(get_notes_hufflepuff(tab))
-	w = array(get_notes_Ravenclaw(tab))
-	get_range(tab)
-
-fig, axes = plt.subplots(nrows=2, ncols=2)
-n_bins = 10
-ax0, ax1, ax2, ax3 = axes.flatten()
-colors = ['#7F0909','#EEE117','#0D6217','#000A90']
-ax0.hist([x, y, z, w], n_bins, normed=1, histtype='bar', color=colors, label=colors)
-ax0.legend(prop={'size': 10})
-ax0.set_title('Flying')
-
-#plt.hist(x, facecolor=slyt_color, alpha = 0.8)
-#plt.hist(y, facecolor=gryff_color, alpha = 0.8)
-#plt.hist(z, facecolor=huff_color, alpha = 0.8)
-#plt.hist(w, facecolor=raven_color, alpha = 0.8)
-
-#ax0.xlabel('Grade')
-#ax0.ylabel('Numbers of students')
-#labels= ["slytherin","gryffindor", "hufflepuff", "ravenclaw"]
-#plt.legend(handles, labels)
-#plt.title(title[18])
-plt.grid(True)
-plt.show()
+with open(args.filename, newline='') as csvfile:
+	reader = csv.DictReader(csvfile)
+	headers = reader.fieldnames
+	N = len(headers) - 6
+	houses = ['Gryffindor', 'Ravenclaw', 'Slytherin', 'Hufflepuff']
+	colors = ['#7F0909', '#000A90', '#0D6217', '#EEE117']
+	x1 = []
+	i = 6
+	for h in headers[6:]:
+		np.array(x1.append([[], [], [], []]))
+	for d in reader:
+		j = 0
+		if d['Hogwarts House'] == 'Gryffindor':
+			for i in headers[6:]:
+				if d[i] != '':
+					np.array(x1[j][0].append(float(d[i])))
+				j += 1
+		if d['Hogwarts House'] == 'Ravenclaw':
+			for i in headers[6:]:
+				if d[i] != '':
+					np.array(x1[j][1].append(float(d[i])))
+				j += 1
+		if d['Hogwarts House'] == 'Slytherin':
+			for i in headers[6:]:
+				if d[i] != '':
+					np.array(x1[j][2].append(float(d[i])))
+				j += 1
+		if d['Hogwarts House'] == 'Hufflepuff':
+			for i in headers[6:]:
+				if d[i] != '':
+					np.array(x1[j][3].append(float(d[i])))
+				j += 1
+	cols = 3
+	gs = gridspec.GridSpec(N // cols + 1, cols)
+	fig = plt.figure()
+	ax = []
+	i = 6
+	for n in range(N):
+		row = (n // cols)
+		col = n % cols
+		ax.append(fig.add_subplot(gs[row, col]))
+		fig.subplots_adjust(hspace=0.5)
+		fig.legend(labels=houses)
+		ax[-1].set_title(headers[i], fontsize=15)
+		i += 1
+		ax[-1].hist(x1[n], histtype='barstacked',
+		            color=colors, label=houses, stacked=True)
+		ax[-1].set_xlabel('Grade')
+		ax[-1].set_ylabel('Numbers of students')
+	plt.show()
