@@ -11,37 +11,33 @@ from numpy import array
 def get_notes_slytherin(tab):
 	notes = []
 	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '' and array[1] == 'Slytherin':
-				notes.append(float(array[18]))
+		array = lines.split(',')
+		if array[18] != '' and array[1] == 'Slytherin':
+			notes.append(float(array[18]))
 	return notes
 
 def get_notes_hufflepuff(tab):
 	notes = []
 	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '' and array[1] == 'Hufflepuff':
-				notes.append(float(array[18]))
+		array = lines.split(',')
+		if array[18] != '' and array[1] == 'Hufflepuff':
+			notes.append(float(array[18]))
 	return notes
 
 def get_notes_Ravenclaw(tab):
 	notes = []
 	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '' and array[1] == 'Ravenclaw':
-				notes.append(float(array[18]))
+		array = lines.split(',')
+		if array[18] != '' and array[1] == 'Ravenclaw':
+			notes.append(float(array[18]))
 	return notes
 
 def get_notes_Gryffindor(tab):
 	notes = []
 	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[18] != '' and array[1] == 'Gryffindor':
-					notes.append(float(array[18]))
+		array = lines.split(',')
+		if array[18] != '' and array[1] == 'Gryffindor':
+				notes.append(float(array[18]))
 	return notes
 
 def get_range(tab):
@@ -52,8 +48,6 @@ def get_range(tab):
 			if array[18] != '':
 					notes.append(float(array[18]))
 	notes.sort()
-	minimal = notes[0]
-	maximal = notes[-1]
 	plt.axis([notes[0], notes[-1], 0, 200])
 
 with open(sys.argv[1], 'r') as my_file:
@@ -61,6 +55,7 @@ with open(sys.argv[1], 'r') as my_file:
 	title = title.split(',')
 	file = my_file.read()
 	tab = file.split('\n')
+	tab.pop()
 	x = array(get_notes_slytherin(tab))
 	y = array(get_notes_Gryffindor(tab))
 	z = array(get_notes_hufflepuff(tab))
