@@ -1,34 +1,33 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import sys
+import csv
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
+import argparse
 
-def get_var(tab, nb):
-	notes = []
-	for lines in tab:
-		if (lines != ''):
-			array = lines.split(',')
-			if array[nb] != '':
-				notes.append(float(array[nb]))
-	return notes
+"""
+	This file create a scatter plot according to a train csv file.
+"""
 
-# array must be of the same size
+def check_file_ext(filename):
+	if not filename.endswith('.csv'):
+		raise argparse.ArgumentTypeError('wrong filetype or path')
+	return filename
 
-with open(sys.argv[1], 'r') as my_file:
-	title = my_file.readline()
-	title = title.split(',')
-	file = my_file.read()
-	tab = file.split('\n')
-	x = get_var(tab, 8)
-	y = get_var(tab, 9)
-	print(len(x))
-	print(len(y))
-	exit(54)
+parser = argparse.ArgumentParser()
+parser.add_argument("filename", type=check_file_ext, help="CSV file path")
+args = parser.parse_args()
 
-# Plot
-plt.scatter(x, y, s=area, c=colors, alpha=0.5)
-plt.title('Scatter plot')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.show()
+with open(args.filename, newline='') as csvfile:
+	reader = csv.DictReader(csvfile)
+	headers = reader.fieldnames
+	houses = ['Gryffindor', 'Ravenclaw', 'Slytherin', 'Hufflepuff']
+	colors = ['#7F0909', '#000A90', '#0D6217', '#EEE117']
+	plt.scatter(x, y, s=area, c=colors, alpha=0.5)
+	plt.title('Scatter plot')
+	plt.xlabel('x')
+	plt.ylabel('y')
+	plt.show()
