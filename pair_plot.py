@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -41,8 +44,7 @@ with open(args.filename, newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     headers = reader.fieldnames
     N = len(headers) - 6
-    houses = ['Gryffindor', 'Ravenclaw', 'Slytherin', 'Hufflepuff']
-    colors = ['#7F0909', '#000A90', '#0D6217', '#EEE117']
+    houses = ['Ravenclaw', 'Hufflepuff', 'Slytherin', 'Gryffindor']
     x1 = []
     i = 6
     hist_arr = []
@@ -51,7 +53,7 @@ with open(args.filename, newline='') as csvfile:
         np.array(hist_arr.append([[],[],[],[]]))
     for d in reader:
         j = 0
-        if d['Hogwarts House'] == 'Gryffindor':
+        if d['Hogwarts House'] == 'Ravenclaw':
             for i in headers[6:]:
                 if d[i] != '':
                     np.array(x1[j][0].append(float(d[i])))
@@ -59,7 +61,7 @@ with open(args.filename, newline='') as csvfile:
                 else:
                     np.array(x1[j][0].append(''))
                 j += 1
-        if d['Hogwarts House'] == 'Ravenclaw':
+        if d['Hogwarts House'] == 'Hufflepuff':
             for i in headers[6:]:
                 if d[i] != '':
                     np.array(x1[j][1].append(float(d[i])))
@@ -75,7 +77,7 @@ with open(args.filename, newline='') as csvfile:
                 else:
                     np.array(x1[j][2].append(''))
                 j += 1
-        if d['Hogwarts House'] == 'Hufflepuff':
+        if d['Hogwarts House'] == 'Gryffindor':
             for i in headers[6:]:
                 if d[i] != '':
                     np.array(x1[j][3].append(float(d[i])))
@@ -98,11 +100,14 @@ with open(args.filename, newline='') as csvfile:
         else:
             for k in range(4):
                 l1, l2 = sanitize_arr(x1[row][k][:], x1[col][k][:])
+<<<<<<< HEAD
                 ax[-1].scatter(l1, l2, label=colors, s=1)
+=======
+                ax[-1].scatter(l1, l2, s=.3, alpha=.5)
+>>>>>>> 3b4e837dd1ab014e90a3bb0290f4f5bb3f16707c
         if (col == 0):
             ax[-1].set_ylabel(headers[row + 6], fontsize=6)
         if (row == 12):
             ax[-1].set_xlabel(headers[col + 6], fontsize=6)
     fig.legend(labels=houses)
-    fig.tight_layout()
 plt.show()
