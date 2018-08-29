@@ -85,11 +85,11 @@ with open(args.filename, newline='') as csvfile:
         else:
             for k in range(4):
                 l1, l2 = sanitize_arr(x1[row][k][:], x1[col][k][:])
-        ax[-1].scatter(l1, l2, c=colors, label=colors, s=5)
+                ax[-1].scatter(l1, l2, label=colors, s=1, alpha=.5)
         if (col == 0):
-            ax[-1].set_ylabel(headers[row + 6], rotation=0)
+            ax[-1].set_ylabel(headers[row + 6], fontsize=6)
         if (row == 12):
-            ax[-1].set_xlabel(headers[col + 6])
+            ax[-1].set_xlabel(headers[col + 6], fontsize=6)
     fig.legend(labels=houses)
     fig.tight_layout()
     plt.show()

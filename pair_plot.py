@@ -6,7 +6,7 @@
 #    By: oespion <oespion@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/25 10:37:56 by oespion           #+#    #+#              #
-#    Updated: 2018/08/25 11:34:05 by oespion          ###   ########.fr        #
+#    Updated: 2018/08/28 15:03:05 by oespion          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,7 @@ with open(args.filename, newline='') as csvfile:
         else:
             for k in range(4):
                 l1, l2 = sanitize_arr(x1[row][k][:], x1[col][k][:])
-            ax[-1].scatter(l1, l2, c=colors, label=colors, s=1)
+                ax[-1].scatter(l1, l2, label=colors, s=1)
         if (col == 0):
             ax[-1].set_ylabel(headers[row + 6], fontsize=6)
         if (row == 12):

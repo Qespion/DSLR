@@ -6,7 +6,7 @@
 #    By: oespion <oespion@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/26 14:02:27 by oespion           #+#    #+#              #
-#    Updated: 2018/08/26 17:37:30 by oespion          ###   ########.fr        #
+#    Updated: 2018/08/29 09:37:44 by oespion          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,8 +48,6 @@ def step_gradient(b_current, m_current, points, learningRate):
 def gradient_descent_runner(points, starting_b, starting_m, learning_rate, num_iterations):
     b = starting_b
     m = starting_m
-    print(array[points])
-    exit()
     for i in range(num_iterations):
         b, m = step_gradient(b, m, array(points), learning_rate)
     return [b, m]
@@ -60,15 +58,19 @@ def gradient_9_12(x1):
     initial_m = 0
     num_iteration = 1000
     r = 0
-    points = [[],[],[],[]]
+    points = [[],[]]
+    for i in range(1600):
+        points[0].append([])
     for i in range(4):
         for nb in x1[9][i]:
-            points[i][r].append(nb)
-            points[i][r].append(x1[12][i][r])
+            points[i][r][0].append(nb)
+            points[i][r][1].append(x1[12][i][r])
             r += 1
-            print(points)
+            # print(points)
+            # exit()
     for r in range(4):
         [b, m] = gradient_descent_runner(points[r], initial_b, initial_m, learning_rate, num_iterations)
+        f.write([b, m])
 
 def check_file_ext(filename):
     if not filename.endswith('.csv'):
@@ -111,6 +113,8 @@ with open(args.filename, newline='') as csvfile:
                 if d[i] != '':
                     np.array(x1[j][3].append(float(d[i])))
                 j += 1
+    print(x1)
+    exit()
     gradient_9_12(x1[:])
     f = open("weight.txt","w+")
     f.write("T GROS\n")
