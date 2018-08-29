@@ -100,11 +100,7 @@ with open(args.filename, newline='') as csvfile:
         else:
             for k in range(4):
                 l1, l2 = sanitize_arr(x1[row][k][:], x1[col][k][:])
-<<<<<<< HEAD
-                ax[-1].scatter(l1, l2, label=colors, s=1)
-=======
-                ax[-1].scatter(l1, l2, s=.3, alpha=.5)
->>>>>>> 3b4e837dd1ab014e90a3bb0290f4f5bb3f16707c
+                ax[-1].scatter(l1, l2, s=1)
         if (col == 0):
             ax[-1].set_ylabel(headers[row + 6], fontsize=6)
         if (row == 12):
