@@ -6,7 +6,7 @@
 #    By: oespion <oespion@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/26 14:02:27 by oespion           #+#    #+#              #
-#    Updated: 2018/08/29 09:37:44 by oespion          ###   ########.fr        #
+#    Updated: 2018/09/03 17:17:16 by oespion          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,57 +20,67 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 import argparse
 
-"""
-    This file has trouble to work according to a train csv file.
-"""
+def sigmoid(z):
+    return 1.0 / (np.exp(-z))
 
-def compute_error_for_line_given_points(b, m, points):
-    totalError = 0
-    for i in range(0, len(points)):
-        x = points[i, 0]
-        y = points[i, 1]
-        totalError += (y - (m * x + b)) ** 2
-    return totalError / float(len(points))
-
-def step_gradient(b_current, m_current, points, learningRate):
-    b_gradient = 0
-    m_gradient = 0
-    N = float(len(points))
-    for i in range(0, len(points)):
-        x = points[i, 0]
-        y = points[i, 1]
-        b_gradient += -(2/N) * (y - ((m_current * x) + b_current))
-        m_gradient += -(2/N) * x * (y - ((m_current * x) + b_current))
-    new_b = b_current - (learningRate * b_gradient)
-    new_m = m_current - (learningRate * m_gradient)
-    return [new_b, new_m]
-
-def gradient_descent_runner(points, starting_b, starting_m, learning_rate, num_iterations):
-    b = starting_b
-    m = starting_m
-    for i in range(num_iterations):
-        b, m = step_gradient(b, m, array(points), learning_rate)
-    return [b, m]
-
-def gradient_9_12(x1):
-    learning_rate = 0.0001
-    initial_b = 0
-    initial_m = 0
-    num_iteration = 1000
-    r = 0
-    points = [[],[]]
-    for i in range(1600):
-        points[0].append([])
-    for i in range(4):
-        for nb in x1[9][i]:
-            points[i][r][0].append(nb)
-            points[i][r][1].append(x1[12][i][r])
-            r += 1
-            # print(points)
-            # exit()
+def sanitize(points):
     for r in range(4):
-        [b, m] = gradient_descent_runner(points[r], initial_b, initial_m, learning_rate, num_iterations)
-        f.write([b, m])
+        len_arr = len(points[0][r])
+        nb = 0
+        while nb < len_arr:
+            while points[0][r][nb] == '' or points[1][r][nb] == '':
+                del(points[0][r][nb])
+                del(points[1][r][nb])
+                len_arr -= 1
+            nb += 1
+    return (points)
+
+"""
+cost & cost gradiant from one vs all page
+"""
+
+def cost(theta, X, y):
+    predictions = sigmoid(X @ theta)
+    predictions[predictions == 1] = 0.999 # log(1)=0 causes error in division
+    error = -y * np.log(predictions) - (1 - y) * np.log(1 - predictions);
+    return sum(error) / len(y);
+
+def cost_gradient(theta, X, y):
+    predictions = sigmoid(X @ theta);
+    return X.transpose() @ (predictions - y) / len(y)
+
+def data_9_12(x1):
+    r = 0
+    points = [[],[],[],[]],[[],[],[],[]]
+    for nb in x1[9]:
+        points[0][r] = nb
+        r += 1
+    r = 0;
+    for nb in x1[12]:
+        points[1][r] = nb
+        r += 1
+    sanitize(points)
+    return points
+
+def y_in_houses(y ,u):
+    new_y = np.zeros(len(y))
+    i = 0
+    for line in y:
+        if line == 'Gryffindor' and u == 0:
+            new_y[i] = 1
+        if line == 'Ravenclaw' and u == 1:
+            new_y[i] = 1
+        if line == 'Slytherin' and u == 2:
+            new_y[i] = 1
+        if line == 'Hufflepuff' and u == 3:
+            new_y[i] = 1
+        i += 1
+    return (new_y)
+
+def logistic_regression(x1, y):
+    points = data_9_12(x1[:])
+    for u in range(4):
+        initial_theta = np.zeros(len(y))
 
 def check_file_ext(filename):
     if not filename.endswith('.csv'):
@@ -84,7 +94,6 @@ args = parser.parse_args()
 with open(args.filename, newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     headers = reader.fieldnames
-    N = len(headers) - 6
     houses = ['Gryffindor', 'Ravenclaw', 'Slytherin', 'Hufflepuff']
     colors = ['#7F0909', '#000A90', '#0D6217', '#EEE117']
     x1 = []
@@ -113,9 +122,7 @@ with open(args.filename, newline='') as csvfile:
                 if d[i] != '':
                     np.array(x1[j][3].append(float(d[i])))
                 j += 1
-    print(x1)
-    exit()
-    gradient_9_12(x1[:])
-    f = open("weight.txt","w+")
+    logistic_regression(x1[:])
+    f = open("weight.csv","w+")
     f.write("T GROS\n")
     f.close()
