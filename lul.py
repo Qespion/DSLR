@@ -5,10 +5,6 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as op
 from sklearn.metrics import accuracy_score
-import seaborn as sb
-from sklearn.metrics import confusion_matrix #Confusion matrix
-from sklearn.metrics import accuracy_score
-from sklearn.cross_validation import train_test_split
 import scipy.io as sio
 
 def sigmoid(z):
