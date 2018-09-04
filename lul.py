@@ -71,5 +71,5 @@ new_x = new_df.loc[:][columns].values
 lr = LogisticRegression()
 lr.fit(x, p)
 result = pd.DataFrame(lr.predict(new_x))
-result.to_csv("resultats.csv")
+result.to_csv("resultats.csv", header=['Hogwarts House'], index_label=['Index'])
 
