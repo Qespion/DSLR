@@ -10,6 +10,7 @@ from sklearn.metrics import confusion_matrix #Confusion matrix
 from sklearn.metrics import accuracy_score
 from sklearn.cross_validation import train_test_split
 import scipy.io as sio
+from sklearn.linear_model import LogisticRegression
 
 def sigmoid(z):
     return 1.0 / (1 + np.exp(-z))
@@ -31,7 +32,7 @@ def regGradient(theta, X, y, _lambda = 0.1):
     return ((1 / m) * X.T.dot(h - y)) + reg
 
 #Optimal theta
-def logisticRegression(X, y, theta):
+def logistic_Regression(X, y, theta):
     result = op.minimize(fun = regCostFunction, x0 = theta, args = (X, y),
                          method = 'TNC', jac = regGradient)
     return result.x
@@ -58,11 +59,26 @@ i = 0
 for house in Houses:
     #set the labels in 0 and 1
     tmp_y = np.array(y == house, dtype = int)
-    optTheta = logisticRegression(X, tmp_y, np.zeros((n + 1,1)))
+    optTheta = logistic_Regression(X, tmp_y, np.zeros((n + 1,1)))
     all_theta[i] = optTheta
     i += 1
+
 #Predictions
 P = sigmoid(X.dot(all_theta.T)) #probability for each house
 p = [Houses[np.argmax(P[i, :])] for i in range(X.shape[0])]
 
 print("Test Accuracy ", accuracy_score(y, p) * 100 , '%')
+
+
+new_data = pd.read_csv('resources/dataset_test.csv', header=0)
+new_df = pd.DataFrame(new_data)
+new_df['Hogwarts House'] = new_df['Hogwarts House'].fillna(0)
+new_df = new_df.dropna(axis=0, how='any')
+new_x = new_df.loc[:][columns].values
+lr = LogisticRegression()
+lr.fit(x, p)
+print(len(lr.predict(new_x)))
+# f = open("answer.csv","w+")
+# f.write(lr.predict(new_x))
+# f.close()
+
